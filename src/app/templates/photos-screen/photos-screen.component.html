@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="col">
+    <app-photo-album [photos]="photos" [line]='photosAmountPerLine' (thumbnailClick)="onThumbnailClick($event)">
+    </app-photo-album>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <app-loader></app-loader>
+  </div>
+</div>

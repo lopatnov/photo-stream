@@ -1,0 +1,11 @@
+.navbar-nav {
+  justify-content: center;
+  width: 100%;
+}
+
+$distance: 5%;
+.nav-item {
+  padding-left: $distance / 2;
+  padding-right: $distance / 2;
+  min-width: 220px;
+}

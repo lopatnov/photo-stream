@@ -1,0 +1,1 @@
+export { PhotoData } from './PhotoData';
