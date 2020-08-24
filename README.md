@@ -8,7 +8,7 @@ This is a web application with infinite photo album. Small demo of Angular 10 pr
 
 This project has atomic architecture. It styled by bootstrap framework that works with ng-bootstrap. All photos on the photo page are random.
 
-![./img/screenshot.png][screenshot]
+[![./img/screenshot.png][screenshot]][photo-stream]
 
 ## Development server
 
@@ -25,3 +25,4 @@ License [Apache-2.0](https://github.com/lopatnov/photo-stream/blob/master/LICENS
 Copyright 2020 Oleksandr Lopatnov
 
 [screenshot]: ./img/screenshot.png
+[photo-stream]: https://lopatnov.github.io/photo-stream/
