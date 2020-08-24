@@ -1,8 +1,14 @@
 # Photo Stream
 
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-lopatnov-informational?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/lopatnov/)
+[![Patreon](https://img.shields.io/badge/Donate-Patreon-informational?style=for-the-badge)](https://www.patreon.com/lopatnov)
+[![License](https://img.shields.io/github/license/lopatnov/photo-stream?style=for-the-badge)](https://github.com/lopatnov/photo-stream/blob/master/LICENSE)
+
 This is a web application with infinite photo album. Small demo of Angular 10 project. When you click to a photo, it adds to favorites and opens on the photo page. This page contains "Remove from favorites" button that removes photo from favorites. You can see favorite photos on the "Favorites" page and return to random photos infinite album on the "Photos" page.
 
-![./img/screenshot.png][screenshot]
+This project has atomic architecture. It styled by bootstrap framework that works with ng-bootstrap. All photos on the photo page are random.
+
+[![./img/screenshot.png][screenshot]][photo-stream]
 
 ## Development server
 
@@ -19,3 +25,4 @@ License [Apache-2.0](https://github.com/lopatnov/photo-stream/blob/master/LICENS
 Copyright 2020 Oleksandr Lopatnov
 
 [screenshot]: ./img/screenshot.png
+[photo-stream]: https://lopatnov.github.io/photo-stream/
