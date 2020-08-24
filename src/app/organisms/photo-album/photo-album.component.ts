@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 import { PhotoData } from '../../services/DTO';
 
@@ -26,6 +26,7 @@ export class PhotoAlbumComponent implements OnChanges, OnInit {
     }
   }
 
+  @HostListener('window:resize')
   private calculateThumbnailWidth() {
     const line = this.line || 3;
     const clientWidth = this.getClientWidth();
