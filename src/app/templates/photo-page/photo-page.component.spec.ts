@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { PhotosService } from 'src/app/services';
 
+import { PhotosService } from 'src/app/services';
 import { PhotoPageComponent } from './photo-page.component';
 
 describe('PhotoPageComponent', () => {

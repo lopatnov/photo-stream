@@ -1,4 +1,4 @@
-<ul ngbNav [activeId]="this.router.url || this.defaultId" class="navbar-nav mx-auto mt-2 mt-lg-0">
+<ul ngbNav [activeId]="router.url || defaultId" class="navbar-nav mx-auto mt-2 mt-lg-0">
   <li [ngbNavItem]="link.path || defaultId" *ngFor="let link of links" class="nav-item">
     <a ngbNavLink [routerLink]="[link.path]" class="nav-link btn btn-light" [innerHTML]="link.title"></a>
   </li>
