@@ -20,7 +20,6 @@ export class PhotoPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private el: ElementRef,
     private location: Location,
     private photos: PhotosService) { }
