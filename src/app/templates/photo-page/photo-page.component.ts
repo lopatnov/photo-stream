@@ -1,3 +1,4 @@
+import { Store } from '@ngrx/store';
 import { Location } from '@angular/common';
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,6 +20,7 @@ export class PhotoPageComponent implements OnInit, OnDestroy {
   blockButtons: boolean;
 
   constructor(
+    private store: Store,
     private route: ActivatedRoute,
     private el: ElementRef,
     private location: Location,
@@ -43,7 +45,7 @@ export class PhotoPageComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  removeFromFavorites() {
+  removeFromFavorites(): void {
     this.blockButtons = true;
     this.photos.get(this.photoId)
       .pipe(takeUntil(this.unsubscribe$))
@@ -55,7 +57,7 @@ export class PhotoPageComponent implements OnInit, OnDestroy {
             if (success) {
               this.location.back();
             }
-          })
-      })
+          });
+      });
   }
 }
