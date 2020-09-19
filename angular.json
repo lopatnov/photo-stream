@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "photo-stream"
+    }
+  },
+  "defaultProject": "photo-stream",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }

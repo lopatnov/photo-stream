@@ -1,37 +1,34 @@
-import { Component, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { PhotosService } from 'src/app/services';
 import { PhotoData } from 'src/app/services/DTO';
+import * as actions from '../photo.actions';
+import { $favorites, $photosAmountPerLine } from '../photo.selectors';
 
 @Component({
   selector: 'app-favorites-screen',
   templateUrl: './favorites-screen.component.html',
   styleUrls: ['./favorites-screen.component.scss']
 })
-export class FavoritesScreenComponent implements OnDestroy {
-  private unsubscribe$ = new Subject<void>();
-  photos: PhotoData[];
-  photosAmountPerLine = 3;
+export class FavoritesScreenComponent {
+  $photos: Observable<PhotoData[]>;
+  $photosAmountPerLine: Observable<number>;
 
-  constructor(private photosService: PhotosService, private router: Router) {
-    this.photosService.favorites()
-      .subscribe(photos => this.photos = photos)
+  constructor(private store: Store) {
+    this.$photos = this.store.select($favorites);
+    this.$photosAmountPerLine = this.store.select($photosAmountPerLine);
+    this.loadPhotos();
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+  private loadPhotos(): void {
+    this.store.dispatch(actions.loadFavorites());
   }
 
-  private navigate(photo: PhotoData) {
-    this.router.navigate(['photos', photo.id]);
-  }
-
-  public onThumbnailClick(photo: PhotoData) {
-    this.photosService.addFavorite(photo);
-    this.navigate(photo);
+  public onThumbnailClick(photo: PhotoData): void {
+    this.store.dispatch(actions.openPhoto({
+      photo
+    }));
   }
 
 }

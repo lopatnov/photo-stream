@@ -1,10 +1,11 @@
-import { Component, HostListener, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { first, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 import { PhotoData } from 'src/app/services/DTO';
-import { PhotosService } from 'src/app/services';
+import { $photos, $photosAmountPerLine } from '../photo.selectors';
+import * as actions from '../photo.actions';
 
 @Component({
   selector: 'app-photos-screen',
@@ -13,11 +14,19 @@ import { PhotosService } from 'src/app/services';
 })
 export class PhotosScreenComponent implements OnDestroy {
   private unsubscribe$ = new Subject<void>();
+  private loadBottomZone = 32;
+  $photosAmountPerLine: Observable<number>;
   photosAmountPerLine = 3;
-  photos: PhotoData[];
+  $photos: Observable<PhotoData[]>;
 
-  constructor(private photosService: PhotosService, private router: Router) {
-    this.photos = [];
+  get loadPhotosAmount(): number {
+    return Math.ceil(window.innerHeight / (window.innerWidth / this.photosAmountPerLine * 0.6) + this.photosAmountPerLine * 5);
+  }
+
+  constructor(private store: Store) {
+    this.$photos = this.store.select($photos);
+    this.$photosAmountPerLine = this.store.select($photosAmountPerLine);
+    this.$photosAmountPerLine.pipe(takeUntil(this.unsubscribe$)).subscribe(n => this.photosAmountPerLine = n);
     this.loadPhotos();
   }
 
@@ -26,25 +35,21 @@ export class PhotosScreenComponent implements OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  private loadPhotos() {
-    const amount = Math.ceil(window.innerHeight / (window.innerWidth / this.photosAmountPerLine * 0.6) + this.photosAmountPerLine * 5);
-    this.photosService.load(amount)
-      .pipe(takeUntil(this.unsubscribe$), first())
-      .subscribe(photos => this.photos = [...this.photos, ...photos]);
+  private loadPhotos(): void {
+    this.store.dispatch(actions.loadPhotos({
+      amount: this.loadPhotosAmount
+    }));
   }
 
-  private navigate(photo: PhotoData) {
-    this.router.navigate(['photos', photo.id]);
-  }
-
-  public onThumbnailClick(photo: PhotoData) {
-    this.photosService.addFavorite(photo);
-    this.navigate(photo);
+  public onThumbnailClick(photo: PhotoData): void {
+    this.store.dispatch(actions.openPhoto({
+      photo
+    }));
   }
 
   @HostListener('window:scroll', ['$event']) // for window scroll events
-  onScroll(event: Event) {
-    if (window.scrollY + window.innerHeight + 50 > document.body.scrollHeight) {
+  onScroll(): void {
+    if (window.scrollY + window.innerHeight + this.loadBottomZone > document.body.scrollHeight) {
       this.loadPhotos();
     }
   }
