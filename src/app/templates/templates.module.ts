@@ -17,7 +17,7 @@ import * as fromPhotos from './photo.reducer';
     CommonModule,
     AtomsModule,
     OrganismsModule,
-    StoreModule.forFeature(fromPhotos.photosFeatureKey, fromPhotos.reducer),
+    StoreModule.forFeature(fromPhotos.moduleFeatureKey, fromPhotos.reducer),
     EffectsModule.forFeature([PhotoEffects])
   ],
   exports: [PhotosScreenComponent, FavoritesScreenComponent, PhotoPageComponent]

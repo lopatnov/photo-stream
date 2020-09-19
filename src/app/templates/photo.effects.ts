@@ -1,8 +1,10 @@
+import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { routerNavigationAction } from '@ngrx/router-store';
 import { of } from 'rxjs';
-import { map, mergeMap, catchError, tap } from 'rxjs/operators';
+import { map, mergeMap, catchError, tap, filter } from 'rxjs/operators';
 
 import { PhotosService } from '../services';
 import * as actions from './photo.actions';
@@ -46,8 +48,43 @@ export class PhotoEffects {
       ))
   ));
 
+  selectPhoto$ = createEffect(() => this.actions$.pipe(
+    ofType(routerNavigationAction),
+    filter(action => action.payload.routerState.root.firstChild.routeConfig.path === 'photos/:id'),
+    mergeMap(action => {
+      const photoId = action.payload.routerState.root.firstChild.params.id;
+      return this.photosService.getUrl(photoId)
+        .pipe(map(url => actions.selectedPhoto({
+          id: photoId,
+          url
+        })));
+    })
+  ));
+
+  removeFromFavorites$ = createEffect(() => this.actions$.pipe(
+    ofType(actions.removeFromFavorites),
+    mergeMap(action => this.photosService.get(action.photoId)
+      .pipe(
+        mergeMap(photo => this.photosService.removeFavorite(photo)
+          .pipe(mergeMap(success => of(actions.removeFromFavoritesSuccess({ success }))))),
+        catchError(error => of(actions.removeFromFavoritesFailure({ error })))
+      ))
+  ));
+
+  navigateBack$ = createEffect(() => this.actions$.pipe(
+    ofType(actions.removeFromFavoritesSuccess),
+    tap(action => {
+      if (action.success) {
+        this.location.back();
+      }
+    })
+  ), {
+    dispatch: false
+  });
+
   constructor(
     private router: Router,
+    private location: Location,
     private actions$: Actions,
     private photosService: PhotosService) { }
 

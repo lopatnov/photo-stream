@@ -1,63 +1,40 @@
 import { Store } from '@ngrx/store';
-import { Location } from '@angular/common';
-import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Component, ElementRef, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 
-import { PhotosService } from 'src/app/services';
+import * as actions from '../photo.actions';
+import * as selectors from '../photo.selectors';
 
 @Component({
   selector: 'app-photo-page',
   templateUrl: './photo-page.component.html',
   styleUrls: ['./photo-page.component.scss']
 })
-export class PhotoPageComponent implements OnInit, OnDestroy {
-  private unsubscribe$ = new Subject<void>();
+export class PhotoPageComponent implements OnInit {
   photoHeight: number = window.innerHeight;
-  photoUrl: string;
-  photoId: string;
-  blockButtons: boolean;
+  $photoUrl: Observable<string>;
+  $photoId: Observable<string>;
+  $blockButtons: Observable<boolean>;
 
   constructor(
     private store: Store,
-    private route: ActivatedRoute,
-    private el: ElementRef,
-    private location: Location,
-    private photos: PhotosService) { }
+    private el: ElementRef) { }
 
   ngOnInit(): void {
     const el: HTMLElement = this.el.nativeElement;
     const photoWrapper = el.querySelector('.photo-wrapper');
     this.photoHeight = window.innerHeight - photoWrapper.getBoundingClientRect().top;
-    this.route.paramMap
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(params => {
-        this.photoId = params.get('id');
-        this.photos.getUrl(this.photoId)
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe(url => this.photoUrl = url);
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+    this.$photoId = this.store.select(selectors.$photoId);
+    this.$photoUrl = this.store.select(selectors.$photoUrl);
+    this.$blockButtons = this.store.select(selectors.$photoBlockButtons);
   }
 
   removeFromFavorites(): void {
-    this.blockButtons = true;
-    this.photos.get(this.photoId)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(photo => {
-        this.photos.removeFavorite(photo)
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe((success) => {
-            this.blockButtons = false;
-            if (success) {
-              this.location.back();
-            }
-          });
-      });
+    this.$photoId.pipe(first()).subscribe(photoId => {
+      this.store.dispatch(actions.removeFromFavorites({
+        photoId
+      }));
+    });
   }
 }

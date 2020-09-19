@@ -1,13 +1,13 @@
 <div class="row">
   <div class="col">
     <div class="photo-wrapper text-center" [style.height.px]="photoHeight">
-      <app-photo [url]="photoUrl"></app-photo>
+      <app-photo [url]="$photoUrl | async"></app-photo>
     </div>
   </div>
 </div>
 <div class="row">
   <div class="col text-center pb-5">
-    <app-button (click)="removeFromFavorites()" [disabled]="blockButtons">
+    <app-button (click)="removeFromFavorites()" [disabled]="$blockButtons | async">
       Remove from favorites
     </app-button>
   </div>
