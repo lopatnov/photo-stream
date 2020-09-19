@@ -1,16 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-photo-thumbnail',
   templateUrl: './photo-thumbnail.component.html',
   styleUrls: ['./photo-thumbnail.component.scss']
 })
-export class PhotoThumbnailComponent implements OnInit {
+export class PhotoThumbnailComponent {
   @Input() photoUrl: string;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

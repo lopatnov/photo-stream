@@ -16,11 +16,11 @@ export class StorageService {
     return of({
       id: photoId,
       url: this.converter.photoId2Url(photoId)
-    })
+    });
   }
 
-  private randomInteger(min: number, max: number) {
-    let rand = min - 0.5 + Math.random() * (max - min + 1);
+  private randomInteger(min: number, max: number): number {
+    const rand = min - 0.5 + Math.random() * (max - min + 1);
     return Math.round(rand);
   }
 
@@ -29,7 +29,7 @@ export class StorageService {
     return {
       id: this.converter.url2PhotoId(url),
       url
-    }
+    };
   }
 
   getRandomPhotos(photosAmount: number): Observable<PhotoData[]> {
@@ -40,7 +40,7 @@ export class StorageService {
     return of(photos);
   }
 
-  private getStoragePhotoId(id: string) {
+  private getStoragePhotoId(id: string): string {
     return `${StorageService.photoPrefix}${id}`;
   }
 
@@ -72,7 +72,7 @@ export class StorageService {
 
   getFavoritePhotos(): Observable<PhotoData[]> {
     const photos: PhotoData[] = [];
-    for (var i = 0; i < localStorage.length; i++) {
+    for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       if (key.startsWith(StorageService.photoPrefix)) {
         const photo = this.converter.deserialize(localStorage.getItem(key));

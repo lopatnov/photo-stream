@@ -10,10 +10,12 @@ export enum ActionTypes {
   loadFavorites = '[Photos] Load Favorites',
   loadFavoritesSuccess = '[Photos] Load Favorites Success',
   loadFavoritesFailure = '[Photos] Load Favorites Failure',
+  addFavoritePhoto = '[Photos] Add From Favorites',
+  addFavoritePhotoSuccess = '[Photos] Add From Favorites Success',
+  addFavoritePhotoFailure = '[Photos] Add From Favorites Failure',
   removeFromFavorites = '[Photos] Remove From Favorites',
   removeFromFavoritesSuccess = '[Photos] Remove From Favorites Success',
   removeFromFavoritesFailure = '[Photos] Remove From Favorites Failure',
-  openPhoto = '[Photos] Open photo',
   navigate = '[Photos] Navigate',
   selectedPhoto = '[Photos] Selected photo',
 }
@@ -24,10 +26,12 @@ export const loadPhotosFailure = createAction(ActionTypes.loadPhotosFailure, pro
 export const loadFavorites = createAction(ActionTypes.loadFavorites);
 export const loadFavoritesSuccess = createAction(ActionTypes.loadFavoritesSuccess, props<{ photos: PhotoData[] }>());
 export const loadFavoritesFailure = createAction(ActionTypes.loadFavoritesFailure, props<{ error: any }>());
+export const addFavoritePhoto = createAction(ActionTypes.addFavoritePhoto, props<{ photo: PhotoData }>());
+export const addFavoritePhotoSuccess = createAction(ActionTypes.addFavoritePhotoSuccess);
+export const addFavoritePhotoFailure = createAction(ActionTypes.addFavoritePhotoFailure, props<{ error: any }>());
 export const removeFromFavorites = createAction(ActionTypes.removeFromFavorites, props<{ photoId: string }>());
 export const removeFromFavoritesSuccess = createAction(ActionTypes.removeFromFavoritesSuccess, props<{ success: boolean }>());
 export const removeFromFavoritesFailure = createAction(ActionTypes.removeFromFavoritesFailure, props<{ error: any }>());
-export const openPhoto = createAction(ActionTypes.openPhoto, props<{ photo: PhotoData }>());
 export const navigate = createAction(ActionTypes.navigate, props<{ photo: PhotoData }>());
 export const selectedPhoto = createAction(ActionTypes.selectedPhoto, props<PhotoData>());
 

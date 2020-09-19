@@ -41,12 +41,6 @@ export class PhotosScreenComponent implements OnDestroy {
     }));
   }
 
-  public onThumbnailClick(photo: PhotoData): void {
-    this.store.dispatch(actions.openPhoto({
-      photo
-    }));
-  }
-
   @HostListener('window:scroll', ['$event']) // for window scroll events
   onScroll(): void {
     if (window.scrollY + window.innerHeight + this.loadBottomZone > document.body.scrollHeight) {

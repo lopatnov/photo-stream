@@ -25,10 +25,4 @@ export class FavoritesScreenComponent {
     this.store.dispatch(actions.loadFavorites());
   }
 
-  public onThumbnailClick(photo: PhotoData): void {
-    this.store.dispatch(actions.openPhoto({
-      photo
-    }));
-  }
-
 }

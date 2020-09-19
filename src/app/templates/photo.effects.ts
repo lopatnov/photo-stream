@@ -22,12 +22,13 @@ export class PhotoEffects {
   ));
 
   photoClick$ = createEffect(() => this.actions$.pipe(
-    ofType(actions.openPhoto),
+    ofType(actions.addFavoritePhoto),
     mergeMap(action => {
       const photo = action.photo;
       return this.photosService.addFavorite(photo)
         .pipe(
-          map(() => actions.navigate({ photo }))
+          map(() => actions.addFavoritePhotoSuccess()),
+          catchError(error => of(actions.addFavoritePhotoFailure({ error })))
         );
     })
   ));

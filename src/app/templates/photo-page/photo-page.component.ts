@@ -19,15 +19,25 @@ export class PhotoPageComponent implements OnInit {
 
   constructor(
     private store: Store,
-    private el: ElementRef) { }
+    private el: ElementRef) {
+    this.$photoId = this.store.select(selectors.$photoId);
+    this.$photoUrl = this.store.select(selectors.$photoUrl);
+    this.$blockButtons = this.store.select(selectors.$photoBlockButtons);
+  }
+
+  private addFavoritePhoto(): void {
+    this.store.select(selectors.$photo).pipe(first()).subscribe(photo => {
+      this.store.dispatch(actions.addFavoritePhoto({
+        photo
+      }));
+    });
+  }
 
   ngOnInit(): void {
     const el: HTMLElement = this.el.nativeElement;
     const photoWrapper = el.querySelector('.photo-wrapper');
     this.photoHeight = window.innerHeight - photoWrapper.getBoundingClientRect().top;
-    this.$photoId = this.store.select(selectors.$photoId);
-    this.$photoUrl = this.store.select(selectors.$photoUrl);
-    this.$blockButtons = this.store.select(selectors.$photoBlockButtons);
+    this.addFavoritePhoto();
   }
 
   removeFromFavorites(): void {

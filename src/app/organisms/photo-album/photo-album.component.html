@@ -1,7 +1,9 @@
 <div class="row">
   <div class="col">
     <div *ngFor="let photo of photos" [style.width.px]='thumbnailWidth' class="thumbnail-container">
-      <app-photo-thumbnail [photoUrl]="photo.url" (click)="thumbnailClick.emit(photo)"></app-photo-thumbnail>
+      <a [routerLink]="['/photos', photo.id]">
+        <app-photo-thumbnail [photoUrl]="photo.url" (click)="thumbnailClick.emit(photo)"></app-photo-thumbnail>
+      </a>
     </div>
   </div>
 </div>

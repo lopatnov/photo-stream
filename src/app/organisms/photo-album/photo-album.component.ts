@@ -27,13 +27,13 @@ export class PhotoAlbumComponent implements OnChanges, OnInit {
   }
 
   @HostListener('window:resize')
-  private calculateThumbnailWidth() {
+  private calculateThumbnailWidth(): void {
     const line = this.line || 3;
     const clientWidth = this.getClientWidth();
     this.thumbnailWidth = (clientWidth - 33) / line;
   }
 
-  private getClientWidth() {
+  private getClientWidth(): number {
     const el: HTMLElement = this.el.nativeElement;
     return el.querySelector('.col').clientWidth;
   }
